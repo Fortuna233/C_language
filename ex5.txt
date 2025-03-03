@@ -1,0 +1,1 @@
+命令行参数：若程序运行时添加参数（如./program arg1 arg2），argc会变为3，argv[0]为程序名，argv[1]和argv[2]为传入的参数
