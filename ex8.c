@@ -1,11 +1,12 @@
 #include <stdio.h>
 
+
+char full_name[] = {'Z', 'e', 'd', ' ', 'A', '.', ' ', 'S', 'h', 'a', 'w'};
+
 int main(int agrc, char *argv[])
 {
 	int areas[] = {10, 12, 13, 14, 20};
 	char name[] = "Zed";
-	char full_name[] = {'Z', 'e', 'd', ' ', 'A', '.', ' ',
-										'S', 'h', 'a', 'w', '\0'};
 
 	printf("%ld\n", sizeof(int));
 	printf("%ld\n", sizeof(areas) / sizeof(int));
