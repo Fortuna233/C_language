@@ -3,33 +3,37 @@
 int main(int agrc, char *argv[])
 {
 	int numbers[4] = {0};
-	char name[4] = {'a'};
+	char *name = "ZED";
 
-	printf("numbers: %d %d %d %d\n", numbers[0], numbers[1], numbers[2], numbers[3]};
+	printf("numbers: %d %d %d %d\n", numbers[0], numbers[1], numbers[2], numbers[3]);
 
-	printf("names: %c %c %c %c\n", name[0], name[1], name[2], name[3]};
+	printf("names: %c %c %c %c\n", name[0], name[1], name[2], name[3]);
 
 
-	printf("nameL %s\n", name);
-	numbers[0] = 1;
-	numbers[1] = 2;
+	printf("names %s\n", name);
+	numbers[0] = 'i';
+	numbers[1] = 'q';
 	numbers[2] = 3;
 	numbers[3] = 4;
 
-	name[0] = 'Z';
-	name[1] = 'e';
-	name[2] = 'd';
-	name[3] = '\0';
-	printf("numbers: %d %d %d %d\n", numbers[0], numbers[1], numbers[2], numbers[3]};
+	printf("numbers: %d %d %d %d\n", numbers[0], numbers[1], numbers[2], numbers[3]);
 
-	printf("names: %c %c %c %c\n", name[0], name[1], name[2], name[3]};
+	printf("names: %c %c %c %c\n", name[0], name[1], name[2], name[3]);
 
-	printf("nameL %s\n", name);
+	printf("names %s\n", name);
 
 	char *another = "Zed";
-	pritnf("another: %s\n", another);
+	printf("another: %s\n", another);
 
-	printf("another: %c %c %c %c\n", another[0], another[1], another[2], another[3]};
+	printf("another: %c %c %c %c\n", another[0], another[1], another[2], another[3]);
+	
+	int A[10] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
+
+	printf("%d\n", A[0]);
+	for(int i = 0; i < 10; i++)
+	{
+		printf("%d: %d\n", i, A[i]);
+	}
 
 	return 0;
 }
