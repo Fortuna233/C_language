@@ -25,5 +25,20 @@ int main(int argc, char *argv[])
 	{
 		printf("%s %d\n", *cur_name, *cur_age);
 	}
+
+	for(char **p = argv; p - argv < argc; p++)
+	 {
+		 printf("%s\n", *p);
+	 }
+
+
+
+
+
+
+
+
+
+
 	return 0;
 }
