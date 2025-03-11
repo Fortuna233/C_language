@@ -2,6 +2,7 @@
 
 int main(int argc, char *argv[])
 {
+	
 	int ages[] = {23, 43, 12, 89, 2};
 	char *names[] = {"ALAN", "FRANK", "MARY", "JOHN", "LISA"};
 	int count = sizeof(ages) / sizeof(int);
@@ -24,20 +25,13 @@ int main(int argc, char *argv[])
 	for(cur_name = names, cur_age = ages; (cur_age - ages) < count; cur_name++, cur_age++)
 	{
 		printf("%s %d\n", *cur_name, *cur_age);
+		printf("%p, %p\n", cur_name, cur_age);
 	}
 
 	for(char **p = argv; p - argv < argc; p++)
 	 {
 		 printf("%s\n", *p);
 	 }
-
-
-
-
-
-
-
-
 
 
 	return 0;
