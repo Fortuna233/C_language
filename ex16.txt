@@ -1,0 +1,9 @@
+--leak-check=full 启用详细内存泄漏检测，程序退出时会分析所有未释放的堆内存，并标记为“definitely lost”（明确泄漏）或“possibly lost”（可能泄漏） 
+--show-leak-kinds=all 显示所有类型的内存泄漏，包括明确泄漏、可能泄漏、间接泄漏（如嵌套泄漏）等。例如，若 Person 结构体的内存未被释放（definitely lost），且其内部指针指向的子内存块也未被释放（indirectly lost），此参数将一并报告 
+2. 补充参数（可选但推荐）
+--track-origins=yes 追踪未初始化内存的来源，虽然主要用于调试未初始化值错误，但能提供更全面的内存操作上下文，帮助理解泄漏路径 
+--log-file=<filename> 将输出保存到指定文件，便于后续分析。例如：--log-file=valgrind.log 
+ 
+-v 增加输出详细程度，显示更多调试信息 
+
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./your_program

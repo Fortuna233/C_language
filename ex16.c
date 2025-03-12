@@ -57,8 +57,9 @@ int main(int argc, char *argv[])
 	Person_print(frank);
 	Person_print(joe);
 
-	Person_destory(joe);
-	Person_destory(frank);
+//	Person_destory(joe);
+//	Person_destory(frank);
+//	Person_print(NULL);
 	return 0;
 }
 
