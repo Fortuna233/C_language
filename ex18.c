@@ -17,7 +17,30 @@ void die(const char *message)
 }
 
 typedef int (*compare_cb)(int a, int b);
+typedef int* (*sort)(int *numbers, int count, compare_cb cmp);
 
+
+int *select_sort(int *numbers, int count, compare_cb cmp)
+{
+	int temp = 0;
+	int *target = malloc(count * sizeof(int));
+	if(!target)
+		die("Memory error.");
+	memcpy(target, numbers, count * sizeof(int));
+	for(int i = 0; i < count - 1; i++)
+	{
+		int k = i;
+		for(int j = i + 1; j < count; j++)
+		{
+			if(cmp(target[j], target[k]) < 0)
+				k = j;
+		}
+		temp = target[i];
+		target[i] = target[k];
+		target[k] = temp;
+	}
+	return target;
+}
 int *bubble_sort(int *numbers, int count, compare_cb cmp)
 {
 	int temp = 0;
@@ -31,7 +54,7 @@ int *bubble_sort(int *numbers, int count, compare_cb cmp)
 		for(int j = 0; j < count - 1; j++)
 		{
 			if(cmp(target[j], target[j + 1]) > 0)
-			{
+		{
 				temp = target[j + 1];
 				target[j + 1] = target[j];
 				target[j] = temp;
@@ -62,9 +85,9 @@ int strange_order(int a, int b)
 	}
 }
 
-void test_sorting(int *numbers, int count, compare_cb cmp)
+void test_sorting(int *numbers, int count, sort sr, compare_cb cmp)
 {
-	int *sorted = bubble_sort(numbers, count, cmp);
+	int *sorted = sr(numbers, count, cmp);
 	if(!sorted)
 		die("failed to sort");
 	
@@ -89,11 +112,9 @@ int main(int argc, char* argv[])
 		numbers[i] = atoi(inputs[i]);
 	}
 
-	test_sorting(numbers, count, sorted_order);
-	test_sorting(numbers, count, reverse_order); 
-	test_sorting(numbers, count, strange_order);
+	test_sorting(numbers, count, bubble_sort, sorted_order);
+	test_sorting(numbers, count, select_sort, sorted_order); 
 	free(numbers);
-
 	return 0;
 }
 
