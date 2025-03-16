@@ -115,7 +115,7 @@ void Database_write(struct Connection *conn)
 				die("failed to write set\n", conn);
 			if(fwrite(conn->db->rows[i].name, conn->db->MAX_DATA, 1, conn->file) != 1)
 				die("failed to write name\n", conn);
-			if(fwrite(&conn->db->rows[i].email, conn->db->MAX_DATA, 1, conn->file) != 1)
+			if(fwrite(conn->db->rows[i].email, conn->db->MAX_DATA, 1, conn->file) != 1)
 				die("failed to write email\n", conn);
 		}
     rc = fflush(conn->file);
@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
         case 'c':
             Database_create(conn);
             Database_write(conn);
-			printf("成功创建i\n");
+			printf("成功创建\n");
             break;
 
         case 'g':
