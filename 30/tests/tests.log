@@ -1,0 +1,4 @@
+DEBUG tests/libex29_tests.c:64: ----- RUNNING: ./tests/libex29_tests
+DEBUG tests/libex29_tests.c:56: 
+----- test_dlopen
+[ERROR] (tests/libex29_tests.c:24: errno: None) Failed to open the library to test.
