@@ -1,1 +1,34 @@
+*
+!*/
+!*.c
+!*.h
+!*.cpp
+!*.hpp
+!Makefile
+!*.mk
+!.gitignore
+!README*
+
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.dll.a
+*.la
+*.lo
+
+# 编译输出/可执行文件
 *.out
+*.exe
+*.bin
+*.elf
+
+# 调试文件
+*.gdb
+*.pdb
+*.idb
+*.map
