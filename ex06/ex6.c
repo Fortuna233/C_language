@@ -9,13 +9,16 @@ int main(int argc, char *argv[])
 	char initial = 'A';   
 	char first_name[] = "Zed";
 	char last_name[] = "Shaw";
+	char void_string[] = "";
 	printf("You are %X,%o miles away.\n", distance, distance);
     printf("You have %.2f levels of power.\n", power);
-    printf("You have %f awesome super powers.\n", super_power);
+    printf("You have %-10f awesome super powers.\n", super_power);
     printf("I have an initial %c.\n", initial);
     printf("I have a first name %s.\n", first_name);
     printf("I have a last name %s.\n", last_name);
     printf("My whole name is %c %s. %s.\n", initial, first_name, last_name);
-		printf("\n");
+    printf("void string: %s .\n", void_string);
+	// printf("My whole name is %c %s. %s.\n", first_name, initial, last_name);
+	printf("\n");
 		return 0;
 }
