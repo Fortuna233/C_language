@@ -7,7 +7,11 @@ int main(int argc, char *arhv[])
 
 	printf("You have %d bugs at the imaginary rate of %f.\n", bugs, bug_rate);
 
-	unsigned long universe_of_defects = 1024L * 1024L * 1024L * 1024;
+	unsigned long universe_of_defects = 1024L * 1024L * 1024L * 1024 * 1024 * 1024 * 1024 * 102400000000;
+	printf("%ld\n", universe_of_defects);
+	universe_of_defects = 102400000000;
+	printf("%ld\n", universe_of_defects);
+	universe_of_defects = 1024L * 1024 * 1024 * 1024 * 1024 * 102400000000;
 	printf("%ld\n", universe_of_defects);
 
 	double expected_bugs = bugs * bug_rate;
