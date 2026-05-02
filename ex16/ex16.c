@@ -1,7 +1,7 @@
-#include<stdio.h>
-#include<assert.h>
-#include<stdlib.h>
-#include<string.h>
+#include <stdio.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 
 struct Person
 {
@@ -32,23 +32,23 @@ void Person_destory(struct Person *who)
 void Person_print(struct Person *who)
 {
 	printf("Name: %s\n", who->name);
-	printf("\tAge: %d\n", who->age);
-	printf("\tHeight: %d\n", who->height);
-	printf("\tWeight: %d\n", who->weight);
+	printf("Age: %d\n", who->age);
+	printf("Height: %d\n", who->height);
+	printf("Weight: %d\n", who->weight);
 }
 
 int main(int argc, char *argv[])
 {
 	struct Person *joe = Person_create(
-	"Joe Alex",
-	32,
-	64,
-	140);
+		"Joe Alex",
+		32,
+		64,
+		140);
 	struct Person *frank = Person_create(
-	"Frank",
-	20,
-	72,
-	180);
+		"Frank",
+		20,
+		72,
+		180);
 
 	printf("joe %p\n", joe);
 	printf("frank %p\n", frank);
@@ -57,9 +57,7 @@ int main(int argc, char *argv[])
 	Person_print(frank);
 	Person_print(joe);
 
-//	Person_destory(joe);
-//	Person_destory(frank);
-//	Person_print(NULL);
+	Person_destory(joe);
+	Person_destory(frank);
 	return 0;
 }
-
