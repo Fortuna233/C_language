@@ -1,11 +1,11 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<errno.h>
-#include<string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 
 void die(const char *message)
 {
-	if(errno)
+	if (errno)
 	{
 		perror(message);
 	}
@@ -17,22 +17,21 @@ void die(const char *message)
 }
 
 typedef int (*compare_cb)(int a, int b);
-typedef int* (*sort)(int *numbers, int count, compare_cb cmp);
-
+typedef int *(*sort)(int *numbers, int count, compare_cb cmp);
 
 int *select_sort(int *numbers, int count, compare_cb cmp)
 {
 	int temp = 0;
 	int *target = malloc(count * sizeof(int));
-	if(!target)
+	if (!target)
 		die("Memory error.");
 	memcpy(target, numbers, count * sizeof(int));
-	for(int i = 0; i < count - 1; i++)
+	for (int i = 0; i < count - 1; i++)
 	{
 		int k = i;
-		for(int j = i + 1; j < count; j++)
+		for (int j = i + 1; j < count; j++)
 		{
-			if(cmp(target[j], target[k]) < 0)
+			if (cmp(target[j], target[k]) < 0)
 				k = j;
 		}
 		temp = target[i];
@@ -45,16 +44,16 @@ int *bubble_sort(int *numbers, int count, compare_cb cmp)
 {
 	int temp = 0;
 	int *target = malloc(count * sizeof(int));
-	if(!target)
+	if (!target)
 		die("Memory error.");
 	memcpy(target, numbers, count * sizeof(int));
 
-	for(int i = 0; i < count; i++)
+	for (int i = 0; i < count; i++)
 	{
-		for(int j = 0; j < count - 1; j++)
+		for (int j = 0; j < count - 1; j++)
 		{
-			if(cmp(target[j], target[j + 1]) > 0)
-		{
+			if (cmp(target[j], target[j + 1]) > 0)
+			{
 				temp = target[j + 1];
 				target[j + 1] = target[j];
 				target[j] = temp;
@@ -75,7 +74,7 @@ int reverse_order(int a, int b)
 }
 int strange_order(int a, int b)
 {
-	if(a == 0 || b == 0)
+	if (a == 0 || b == 0)
 	{
 		return 0;
 	}
@@ -88,33 +87,57 @@ int strange_order(int a, int b)
 void test_sorting(int *numbers, int count, sort sr, compare_cb cmp)
 {
 	int *sorted = sr(numbers, count, cmp);
-	if(!sorted)
+	if (!sorted)
 		die("failed to sort");
-	
-	for(int i = 0; i < count; i++)
+
+	for (int i = 0; i < count; i++)
 	{
 		printf("%d ", sorted[i]);
 	}
 	printf("\n");
 	free(sorted);
+	unsigned char *data = (unsigned char *)cmp;
+	for (int i = 0; i < 25; i++)
+	{
+		printf("%x:", data[i]);
+	}
+	printf("\n");
 }
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
-	if(argc < 2)
+	if (argc < 2)
 		die("USAGE: ex18 4 3 1 5 6");
 	int count = argc - 1;
 	char **inputs = argv + 1;
 	int *numbers = malloc(count * sizeof(int));
-	if(!numbers) die("Memory error");
-	for(int i = 0; i < count; i++)
+	if (!numbers)
+		die("Memory error");
+	for (int i = 0; i < count; i++)
 	{
 		numbers[i] = atoi(inputs[i]);
 	}
-
 	test_sorting(numbers, count, bubble_sort, sorted_order);
-	test_sorting(numbers, count, select_sort, sorted_order); 
+	test_sorting(numbers, count, bubble_sort, reverse_order);
+	test_sorting(numbers, count, bubble_sort, strange_order);
+	test_sorting(numbers, count, select_sort, sorted_order);
+	test_sorting(numbers, count, select_sort, reverse_order);
+	test_sorting(numbers, count, select_sort, strange_order);
 	free(numbers);
 	return 0;
 }
 
+
+// T1 强制将cmp转换为unsigned char *，然后打印前25字节，此即机器码
+// 在代码中将其打印
+// 利用xxd ex18 | less进行查找
+
+
+// T2 利用hexedit打开ex18,将memory error修改为funnyy error，运行无事发生
+
+// T3 error: ‘sorted_order1’ undeclared (first use in this function)
+
+// T4 segmentation fault(core dumped)
+// junp to invalid address 0x0
+
+// 编写select_sort
