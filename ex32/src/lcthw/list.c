@@ -1,5 +1,59 @@
 #include <lcthw/list.h>
 #include <lcthw/dbg.h>
+#include <assert.h>
+
+static int List_invariant(List *list)
+{
+    if (list == NULL)
+        return 0;
+
+    if (list->count < 0)
+        return 0;
+
+    if (list->count == 0)
+    {
+        if (list->first != NULL)
+            return 0;
+        if (list->last != NULL)
+            return 0;
+        return 1;
+    }
+
+    if (list->first == NULL)
+        return 0;
+    if (list->last == NULL)
+        return 0;
+
+    if (list->first->prev != NULL)
+        return 0;
+    if (list->last->next != NULL)
+        return 0;
+
+    int count = 0;
+    ListNode *cur = list->first;
+    ListNode *prev = NULL;
+
+    while (cur != NULL)
+    {
+        if (cur->prev != prev)
+            return 0;
+
+        prev = cur;
+        cur = cur->next;
+        count++;
+        // 避免链表内部有环
+        if (count > list->count)
+            return 0;
+    }
+
+    if (prev != list->last)
+        return 0;
+
+    if (count != list->count)
+        return 0;
+
+    return 1;
+}
 
 List *List_create()
 {
@@ -8,6 +62,8 @@ List *List_create()
 
 void List_destroy(List *list)
 {
+    assert(list != NULL);
+    List_invariant(list);
     LIST_FOREACH(list, first, next, cur)
     {
         if (cur->prev)
@@ -22,6 +78,9 @@ void List_destroy(List *list)
 
 void List_clear(List *list)
 {
+    assert(list != NULL);
+    List_invariant(list);
+
     LIST_FOREACH(list, first, next, cur)
     {
         free(cur->value);
@@ -30,12 +89,25 @@ void List_clear(List *list)
 
 void List_clear_destroy(List *list)
 {
-    List_clear(list);
-    List_destroy(list);
+    assert(list != NULL);
+    List_invariant(list);
+
+    ListNode *cur = list->first;
+    ListNode *next = NULL;
+    while (cur)
+    {
+        next = cur->next;
+        free(cur->value);
+        free(cur);
+        cur = next;
+    }
+    free(list);
 }
 
 void List_push(List *list, void *value)
 {
+    // pointer list should be pointing to struct List, not NULL
+    assert(list != NULL);
     ListNode *node = calloc(1, sizeof(ListNode));
     // 检查内存是否申请成功
     check_mem(node);
@@ -55,6 +127,7 @@ void List_push(List *list, void *value)
     }
 
     list->count++;
+    List_invariant(list);
 
 error:
     return NULL;
@@ -62,18 +135,31 @@ error:
 
 void *List_pop(List *list)
 {
+    assert(list != NULL);
+    List_invariant(list);
+
     ListNode *node = list->last;
+    List_invariant(list);
+
     return node != NULL ? List_remove(list, node) : NULL;
 }
 
 void *List_shift(List *list)
 {
+    assert(list != NULL);
+    List_invariant(list);
+
     ListNode *node = list->first;
+    List_invariant(list);
+
     return node != NULL ? List_remove(list, node) : NULL;
 }
 
 void List_unshift(List *list, void *value)
 {
+    assert(list != NULL);
+    List_invariant(list);
+
     ListNode *node = calloc(1, sizeof(ListNode));
     check_mem(node);
 
@@ -92,6 +178,7 @@ void List_unshift(List *list, void *value)
     }
 
     list->count++;
+    List_invariant(list);
 
 error:
     return;
@@ -99,6 +186,9 @@ error:
 
 void *List_remove(List *list, ListNode *node)
 {
+    assert(list != NULL);
+    List_invariant(list);
+
     void *result = NULL;
 
     check(list->first && list->last, "List is empty.");
@@ -132,7 +222,52 @@ void *List_remove(List *list, ListNode *node)
     list->count--;
     result = node->value;
     free(node);
+    List_invariant(list);
 
 error:
     return result;
+}
+
+void *List_copy(List *list, char mode)
+{
+    assert(list != NULL);
+    List_invariant(list);
+
+    int count = 0;
+
+    List *new_list = List_create();
+    List_invariant(new_list);
+
+    LIST_FOREACH(list, first, next, cur)
+    {
+        // data_copy
+        if (mode == 'd')
+        {
+            void *new_value = strdup((const char *)cur->value);
+            List_push(new_list, new_value);
+        }
+        else
+        {
+            void *new_value = cur->value;
+            List_push(new_list, new_value);
+        }
+        // push data into new link list
+        count++;
+    }
+    List_invariant(new_list);
+    return new_list;
+
+error:
+    if (new_list)
+    {
+        if (mode == 'd')
+        {
+            List_clear_destroy(new_list);
+        }
+        else
+        {
+            List_destroy(new_list);
+        }
+    }
+    return NULL;
 }

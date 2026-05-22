@@ -27,6 +27,7 @@ void List_clear_destroy(List *list);
 #define List_first(A) ((A)->first != NULL ? (A)->first->value : NULL)
 #define List_last(A) ((A)->last != NULL ? (A)->last->value : NULL)
 
+// void *: return generic pointer
 void List_push(List *list, void *value);
 void *List_pop(List *list);
 
@@ -35,6 +36,11 @@ void *List_shift(List *list);
 
 void *List_remove(List *list, ListNode *node);
 
+void *List_copy(List *list, char mode);
+// void *List_link;
+// void *List_divide;
+
+#define List_shallow_copy(list) List_copy(list, NULL)
 // L链表指针
 // S first或者last
 // M 移动方向
