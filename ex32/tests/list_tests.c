@@ -210,7 +210,6 @@ char *test_concat()
     mu_assert(List_count(list2) == 3, "list2 should have 3 elements.");
 
     List *new_list = List_concat(list1, list2);
-    printf("new_list->count: %d\n", new_list->count);
     mu_assert(List_count(new_list) == 6, "new_list should have 6 elements.");
     mu_assert(new_list->first->value == list1->first->value, "1st node not right");
     mu_assert(new_list->first->next->value == list1->first->next->value, "2nd node not right");
@@ -221,6 +220,60 @@ char *test_concat()
     List_destroy(new_list);
     List_clear_destroy(list1);
     List_clear_destroy(list2);
+    return NULL;
+}
+
+char *test_divide()
+{
+    char *str1 = malloc(32);
+    char *str2 = malloc(32);
+    char *str3 = malloc(32);
+    char *str4 = malloc(32);
+    char *str5 = malloc(32);
+    char *str6 = malloc(32);
+    mu_assert(str1 != NULL && str2 != NULL && str3 != NULL, "Failed to allocate test strings.");
+    mu_assert(str4 != NULL && str5 != NULL && str6 != NULL, "Failed to allocate test strings.");
+    strcpy(str1, "original_value_1");
+    strcpy(str2, "original_value_2");
+    strcpy(str3, "original_value_3");
+    strcpy(str4, "original_value_4");
+    strcpy(str5, "original_value_5");
+    strcpy(str6, "original_value_6");
+
+    List *list = List_create();
+    List_push(list, str1);
+    List_push(list, str2);
+    List_push(list, str3);
+    List_push(list, str4);
+    List_push(list, str5);
+    List_push(list, str6);
+    int position = 3;
+    ListPair *pair = List_divide(list, position);
+    mu_assert(pair != NULL, "List_divide failed.");
+    mu_assert(pair->first != NULL, "first list is NULL.");
+    mu_assert(pair->second != NULL, "second list is NULL.");
+    mu_assert(pair->first->count + pair->second->count == list->count, "number of nodes bot match.");
+    ListNode *cur = list->first;
+    ListNode *p_cur = pair->first->first;
+    ListNode *n_cur = pair->second->first;
+    for (int i = 0; i < list->count; i++)
+    {
+        if (i < position)
+        {
+            mu_assert(strcmp(cur->value, p_cur->value) == 0, "value not equal");
+            p_cur = p_cur->next;
+        }
+        else
+        {
+            mu_assert(strcmp(cur->value, n_cur->value) == 0, "value not equal");
+            n_cur = n_cur->next;
+        }
+        cur = cur->next;
+    }
+    List_clear_destroy(list);
+    List_clear_destroy(pair->first);
+    List_clear_destroy(pair->second);
+    free(pair);
     return NULL;
 }
 
@@ -236,6 +289,7 @@ char *all_tests()
     mu_run_test(test_copy);
     mu_run_test(test_concat);
     mu_run_test(test_destroy);
+    mu_run_test(test_divide);
 
     return NULL;
 }

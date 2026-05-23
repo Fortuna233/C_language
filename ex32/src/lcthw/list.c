@@ -272,8 +272,6 @@ error:
     return NULL;
 }
 
-
-
 void *List_concat(List *list1, List *list2)
 {
     assert(list1 != NULL);
@@ -284,15 +282,57 @@ void *List_concat(List *list1, List *list2)
     List *new_list = List_create();
     List_invariant(new_list);
 
-    LIST_FOREACH(list1, first, next, cur) {
+    LIST_FOREACH(list1, first, next, cur)
+    {
         List_push(new_list, cur->value);
     }
 
-    LIST_FOREACH(list2, first, next, cur) {
+    LIST_FOREACH(list2, first, next, cur)
+    {
         List_push(new_list, cur->value);
     }
 
     List_invariant(new_list);
     assert(new_list->count == list1->count + list2->count);
     return new_list;
+}
+
+ListPair *List_divide(List *list, int position)
+{
+    // position >=1 and < count
+    assert(list != NULL);
+    List_invariant(list);
+    assert(position >= 1 && position < list->count);
+
+    void *result = NULL;
+    ListPair *pair = malloc(sizeof(ListPair));
+    pair->first = NULL;
+    pair->second = NULL;
+
+    if (list->first == list->last)
+    {
+        printf("only one node detected not dividable.");
+        return pair;
+    }
+    List *p_list = List_create();
+    List *n_list = List_create();
+    ListNode *cur = list->first;
+    for (int i = 0; i < list->count; i++)
+    {
+        void *new_value = strdup((const char *)cur->value);
+        if (i < position)
+        {
+            List_push(p_list, new_value);
+        }
+        else
+        {
+            List_push(n_list, new_value);
+        }
+        cur = cur->next;
+    }
+    pair->first = p_list;
+    pair->second = n_list;
+    List_invariant(pair->first);
+    List_invariant(pair->second);
+    return pair;
 }

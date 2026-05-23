@@ -18,6 +18,11 @@ typedef struct List
     ListNode *last;
 } List;
 
+typedef struct ListPair {
+    List *first;  // 前半段
+    List *second; // 后半段
+} ListPair;
+
 List *List_create();
 void List_destroy(List *list);
 void List_clear(List *list);
@@ -38,7 +43,7 @@ void *List_remove(List *list, ListNode *node);
 
 void *List_copy(List *list, char mode);
 void *List_concat(List *list1, List *list2);
-void *List_divide(List *list);
+ListPair *List_divide(List *list, int position);
 
 #define List_shallow_copy(list) List_copy(list, NULL)
 // L链表指针
