@@ -271,3 +271,28 @@ error:
     }
     return NULL;
 }
+
+
+
+void *List_concat(List *list1, List *list2)
+{
+    assert(list1 != NULL);
+    assert(list2 != NULL);
+    List_invariant(list1);
+    List_invariant(list2);
+
+    List *new_list = List_create();
+    List_invariant(new_list);
+
+    LIST_FOREACH(list1, first, next, cur) {
+        List_push(new_list, cur->value);
+    }
+
+    LIST_FOREACH(list2, first, next, cur) {
+        List_push(new_list, cur->value);
+    }
+
+    List_invariant(new_list);
+    assert(new_list->count == list1->count + list2->count);
+    return new_list;
+}

@@ -37,8 +37,8 @@ void *List_shift(List *list);
 void *List_remove(List *list, ListNode *node);
 
 void *List_copy(List *list, char mode);
-// void *List_link;
-// void *List_divide;
+void *List_concat(List *list1, List *list2);
+void *List_divide(List *list);
 
 #define List_shallow_copy(list) List_copy(list, NULL)
 // L链表指针
@@ -46,8 +46,6 @@ void *List_copy(List *list, char mode);
 // M 移动方向
 // 当前节点
 #define LIST_FOREACH(L, S, M, V) \
-    ListNode *_node = NULL;      \
-    ListNode *V = NULL;          \
-    for (V = _node = L->S; _node != NULL; V = _node = _node->M)
+    for(ListNode *_node = (L)->S, *V = _node; _node != NULL; V = _node = _node->M)
 
 #endif
